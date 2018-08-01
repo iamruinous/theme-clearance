@@ -4,6 +4,12 @@
 # - Virtualenv name (if applicable, see https://github.com/adambrenecki/virtualfish)
 # - Current directory name
 # - Git branch and dirty state (if inside a git repo)
+# - Username@hostname if $SSH_CLIENT is present
+
+function _user_hostname
+  hostname | read -l hostname __
+  echo -ns (whoami) '@' $hostname ' '
+end
 
 function _git_branch_name
   echo (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
@@ -29,6 +35,12 @@ function fish_prompt
 
   # Add a newline before new prompts
   echo -e ''
+
+  # Display username@hostname if $SSH_CLIENT
+  if set -q SSH_CLIENT
+    set -l user_hostname (_user_hostname)
+    echo -n -s (set_color -b green black) $user_hostname
+  end
 
   # Display [venvname] if in a virtualenv
   if set -q VIRTUAL_ENV
