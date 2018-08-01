@@ -39,7 +39,7 @@ function fish_prompt
   # Display username@hostname if $SSH_CLIENT
   if set -q SSH_CLIENT
     set -l user_hostname (_user_hostname)
-    echo -n -s $cyan $user_hostname $normal
+    echo -n -s $green $user_hostname $normal ' '
   end
 
   # Display [venvname] if in a virtualenv
